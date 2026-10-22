@@ -1,7 +1,8 @@
-import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
+import { PGVectorStore } from "@langchain/community/vectorstores/pgvector";
+import "dotenv/config";
 
 const embeddings = new OpenAIEmbeddings({
   apiKey: process.env.OPENAI_API_KEY,
@@ -9,7 +10,19 @@ const embeddings = new OpenAIEmbeddings({
   model: "text-embedding-3-small",
 });
 
-export const vectorstore = new MemoryVectorStore(embeddings);
+export const vectorStore = await PGVectorStore.initialize(embeddings, {
+  postgresConnectionOptions: {
+    connectionString: process.env.DB_URl,
+  },
+  tableName: "transcripts",
+  columns: {
+    idColumnName: "id",
+    vectorColumnName: "vector",
+    contentColumnName: "content",
+    metadataColumnName: "metadata",
+  },
+  distanceStrategy: "cosine",
+});
 
 export const addYTVideoToVectorStore = async (videoData: {
   transcript?: string;
@@ -26,5 +39,5 @@ export const addYTVideoToVectorStore = async (videoData: {
   });
 
   const chunks = await splitter.splitDocuments([docs]);
-  await vectorstore.addDocuments(chunks);
+  await vectorStore.addDocuments(chunks);
 };

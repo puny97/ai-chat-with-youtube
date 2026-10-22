@@ -5,28 +5,29 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 import { createAgent } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
-import { addYTVideoToVectorStore, vectorstore } from "./embeddings.js";
+import { addYTVideoToVectorStore, vectorStore } from "./embeddings.js";
 
 const video1 = data[0];
 const video2 = data[1];
+
 if (!video1) {
   throw new Error("No video data available.");
 }
 
-await addYTVideoToVectorStore(video1);
-if (video2) {
-  await addYTVideoToVectorStore(video2);
+if (!video2) {
+  throw new Error("No video data available.");
 }
+
+// await addYTVideoToVectorStore(video1);
+// await addYTVideoToVectorStore(video2);
 
 const checkpointer = new MemorySaver();
 
 const retrievalTool = tool(
   async ({ query }, { configurable: { video_id } }) => {
-    const retrievedDocs = await vectorstore.similaritySearch(
-      query,
-      3,
-      (doc) => doc.metadata.video_id === video_id,
-    );
+    const retrievedDocs = await vectorStore.similaritySearch(query, 3, {
+      video_id,
+    });
 
     const serializedDocs = retrievedDocs
       .map((doc) => doc.pageContent)

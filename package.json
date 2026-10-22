@@ -13,17 +13,20 @@
   "packageManager": "pnpm@10.30.1",
   "devDependencies": {
     "@types/node": "^26.6.5",
+    "@types/pg": "^8.23.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },
   "dependencies": {
     "@langchain/classic": "^1.0.54",
+    "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.20",
     "@langchain/langgraph": "^1.5.2",
     "@langchain/openai": "^1.6.3",
     "@langchain/textsplitters": "^1.0.2",
     "dotenv": "^18.0.8",
     "langchain": "^1.5.18",
+    "pg": "^8.23.1",
     "zod": "^4.6.7"
   }
 }
