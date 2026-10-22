@@ -48,27 +48,8 @@ const model = new ChatOpenAI({
   model: "gpt-5.5",
 });
 
-const agent = createAgent({
+export const agent = createAgent({
   model,
   tools: [retrievalTool],
   checkpointer,
 });
-
-const video_id = "bGzmzkX4Kqk";
-
-console.log(
-  "Q1: How traditional payment gateway works? (give me a short answer)",
-);
-const aiMsg = await agent.invoke(
-  {
-    messages: [
-      {
-        role: "user",
-        content:
-          "How traditional payment gateway works? (give me a short answer) (get content from transcript)",
-      },
-    ],
-  },
-  { configurable: { thread_id: "1", video_id } },
-);
-console.log(aiMsg.messages.at(-1)?.content);
