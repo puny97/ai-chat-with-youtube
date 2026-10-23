@@ -1,27 +1,27 @@
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { Document } from "@langchain/core/documents";
-import { PGVectorStore } from "@langchain/community/vectorstores/pgvector";
-import "dotenv/config";
+import { OpenAIEmbeddings } from '@langchain/openai';
+import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
+import { Document } from '@langchain/core/documents';
+import { PGVectorStore } from '@langchain/community/vectorstores/pgvector';
+import 'dotenv/config';
 
 const embeddings = new OpenAIEmbeddings({
   apiKey: process.env.OPENAI_API_KEY,
   batchSize: 512,
-  model: "text-embedding-3-small",
+  model: 'text-embedding-3-small',
 });
 
 export const vectorStore = await PGVectorStore.initialize(embeddings, {
   postgresConnectionOptions: {
     connectionString: process.env.DB_URl,
   },
-  tableName: "transcripts",
+  tableName: 'transcripts',
   columns: {
-    idColumnName: "id",
-    vectorColumnName: "vector",
-    contentColumnName: "content",
-    metadataColumnName: "metadata",
+    idColumnName: 'id',
+    vectorColumnName: 'vector',
+    contentColumnName: 'content',
+    metadataColumnName: 'metadata',
   },
-  distanceStrategy: "cosine",
+  distanceStrategy: 'cosine',
 });
 
 export const addYTVideoToVectorStore = async (videoData: {
@@ -29,7 +29,7 @@ export const addYTVideoToVectorStore = async (videoData: {
   video_id: string;
 }) => {
   const docs = new Document({
-    pageContent: videoData.transcript ?? "",
+    pageContent: videoData.transcript ?? '',
     metadata: { video_id: videoData.video_id },
   });
 

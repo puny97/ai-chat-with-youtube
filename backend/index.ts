@@ -1,8 +1,8 @@
-import express from "express";
-import cors from "cors";
-import "dotenv/config";
-import { agent } from "./agent.js";
-import data from "./data.js";
+import express from 'express';
+import cors from 'cors';
+import 'dotenv/config';
+import { agent } from './agent.js';
+import data from './data.js';
 
 const port = process.env.PORT || 8000;
 
@@ -11,40 +11,40 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
+app.get('/', (req, res) => {
+  res.send('Hello World');
 });
 
-app.post("/generate", async (req, res) => {
+app.post('/generate', async (req, res) => {
   const { query, video_id, thread_id } = req.body ?? {};
 
   if (
-    typeof query !== "string" ||
+    typeof query !== 'string' ||
     !query.trim() ||
     query.trim().length > 2000
   ) {
     res
       .status(400)
-      .json({ error: "Enter a question between 1 and 2000 characters." });
+      .json({ error: 'Enter a question between 1 and 2000 characters.' });
     return;
   }
 
   if (
-    typeof video_id !== "string" ||
+    typeof video_id !== 'string' ||
     !data.some((video) => video.video_id === video_id)
   ) {
     res
       .status(400)
-      .json({ error: "Choose a video from the available videos." });
+      .json({ error: 'Choose a video from the available videos.' });
     return;
   }
 
   if (
-    typeof thread_id !== "string" ||
+    typeof thread_id !== 'string' ||
     !thread_id.trim() ||
     thread_id.length > 128
   ) {
-    res.status(400).json({ error: "A valid conversation thread is required." });
+    res.status(400).json({ error: 'A valid conversation thread is required.' });
     return;
   }
 
@@ -53,7 +53,7 @@ app.post("/generate", async (req, res) => {
       {
         messages: [
           {
-            role: "user",
+            role: 'user',
             content: query.trim(),
           },
         ],
@@ -63,41 +63,39 @@ app.post("/generate", async (req, res) => {
 
     const content = aiMsg.messages.at(-1)?.content;
     const answer =
-      typeof content === "string"
+      typeof content === 'string'
         ? content
         : Array.isArray(content)
           ? content
               .map((part) =>
-                typeof part === "string"
+                typeof part === 'string'
                   ? part
-                  : typeof part === "object" &&
+                  : typeof part === 'object' &&
                       part !== null &&
-                      "text" in part &&
-                      typeof part.text === "string"
+                      'text' in part &&
+                      typeof part.text === 'string'
                     ? part.text
-                    : "",
+                    : '',
               )
-              .join("")
-          : "";
+              .join('')
+          : '';
 
     if (!answer.trim()) {
-      res
-        .status(502)
-        .json({
-          error: "The assistant did not return an answer. Please try again.",
-        });
+      res.status(502).json({
+        error: 'The assistant did not return an answer. Please try again.',
+      });
       return;
     }
 
     res.json({ answer: answer.trim() });
   } catch (error) {
-    console.error("Failed to generate an answer:", error);
+    console.error('Failed to generate an answer:', error);
     res
       .status(500)
-      .json({ error: "Unable to answer right now. Please try again." });
+      .json({ error: 'Unable to answer right now. Please try again.' });
   }
 });
 
 app.listen(port, () => {
-  console.log("Server running on port 8000");
+  console.log('Server running on port 8000');
 });
