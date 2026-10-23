@@ -1,35 +1,35 @@
 const apiBaseUrl = (
-  import.meta.env.VITE_API_URL ?? "http://localhost:8000"
-).replace(/\/$/, "");
+  import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+).replace(/\/$/, '');
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+  return typeof value === 'object' && value !== null;
 }
 
 export const apiSubmission = async (query: string) => {
   const response = await fetch(`${apiBaseUrl}/generate`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       query,
-      video_id: "DhJBlhw8Ye8",
-      thread_id: "1",
+      video_id: 'DhJBlhw8Ye8',
+      thread_id: '1',
     }),
   });
   const payload: unknown = await response.json().catch(() => null);
   if (!response.ok) {
     const message =
-      isRecord(payload) && typeof payload.error === "string"
+      isRecord(payload) && typeof payload.error === 'string'
         ? payload.error
-        : "Your question could not be answered. Please try again.";
+        : 'Your question could not be answered. Please try again.';
     throw new Error(message);
   }
-  if (!isRecord(payload) || typeof payload.answer !== "string") {
-    throw new Error("The server returned an empty or invalid answer.");
+  if (!isRecord(payload) || typeof payload.answer !== 'string') {
+    throw new Error('The server returned an empty or invalid answer.');
   }
   const answer = payload.answer.trim();
   if (!answer)
-    throw new Error("The server returned an empty or invalid answer.");
+    throw new Error('The server returned an empty or invalid answer.');
 
   return answer;
 };

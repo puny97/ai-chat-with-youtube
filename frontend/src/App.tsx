@@ -1,24 +1,24 @@
-import { type FormEvent, useEffect, useRef, useState } from "react";
-import "./App.css";
-import type { Message } from "./types";
-import Icon from "./Icon";
-import { apiSubmission } from "./api";
+import { type FormEvent, useEffect, useRef, useState } from 'react';
+import './App.css';
+import type { Message } from './types';
+import Icon from './Icon';
+import { apiSubmission } from './api';
 
 const maxQuestionLength = 2000;
 
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [question, setQuestion] = useState("");
+  const [question, setQuestion] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const remainingCharacters = maxQuestionLength - question.length;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
+      behavior: 'smooth',
+      block: 'end',
     });
   }, [messages, isSending]);
 
@@ -29,19 +29,19 @@ function App() {
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
-      role: "user",
+      role: 'user',
       content: query,
     };
     setMessages((current) => [...current, userMessage]);
-    setQuestion("");
-    setError("");
+    setQuestion('');
+    setError('');
     setIsSending(true);
 
     try {
       const result = await apiSubmission(query);
       setMessages((current) => [
         ...current,
-        { id: crypto.randomUUID(), role: "assistant", content: result },
+        { id: crypto.randomUUID(), role: 'assistant', content: result },
       ]);
     } catch (sendError) {
       setMessages((current) =>
@@ -51,7 +51,7 @@ function App() {
       setError(
         sendError instanceof Error
           ? sendError.message
-          : "Could not connect to the server.",
+          : 'Could not connect to the server.',
       );
     } finally {
       setIsSending(false);
@@ -123,9 +123,9 @@ function App() {
                 </p>
                 <div className="suggestions" aria-label="Suggested questions">
                   {[
-                    "Give me the short version",
-                    "What are the key takeaways?",
-                    "What limitations are mentioned?",
+                    'Give me the short version',
+                    'What are the key takeaways?',
+                    'What limitations are mentioned?',
                   ].map((prompt) => (
                     <button
                       className="suggestion"
@@ -146,15 +146,15 @@ function App() {
                     key={message.id}
                   >
                     <div className="message-avatar">
-                      {message.role === "assistant" ? (
+                      {message.role === 'assistant' ? (
                         <Icon name="spark" size={16} />
                       ) : (
-                        "Y"
+                        'Y'
                       )}
                     </div>
                     <div className="message-body">
                       <div className="message-author">
-                        {message.role === "assistant" ? "Frame" : "You"}
+                        {message.role === 'assistant' ? 'Frame' : 'You'}
                       </div>
                       <p>{message.content}</p>
                     </div>
@@ -200,7 +200,7 @@ function App() {
                 value={question}
                 onChange={(event) => setQuestion(event.target.value)}
                 onKeyDown={(event) => {
-                  if (event.key === "Enter" && !event.shiftKey) {
+                  if (event.key === 'Enter' && !event.shiftKey) {
                     event.preventDefault();
                     event.currentTarget.form?.requestSubmit();
                   }
@@ -212,13 +212,13 @@ function App() {
               />
               <div className="composer-footer">
                 <span className="composer-hint">
-                  {" "}
-                  <kbd>↵</kbd> to send <span className="hint-divider">·</span>{" "}
+                  {' '}
+                  <kbd>↵</kbd> to send <span className="hint-divider">·</span>{' '}
                   <kbd>shift + ↵</kbd> for a new line
                 </span>
                 <div className="composer-actions">
                   <span
-                    className={`character-count ${remainingCharacters < 100 ? "near-limit" : ""}`}
+                    className={`character-count ${remainingCharacters < 100 ? 'near-limit' : ''}`}
                   >
                     {remainingCharacters}
                   </span>
