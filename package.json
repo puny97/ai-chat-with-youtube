@@ -4,9 +4,17 @@
   "packageManager": "pnpm@10.30.1",
   "scripts": {
     "format": "prettier --write \"frontend/**/*.{ts,tsx,js,jsx,json,css,html,md}\" \"backend/**/*.{ts,js,json,md}\"",
-    "format:check": "prettier --check \"frontend/**/*.{ts,tsx,js,jsx,json,css,html,md}\" \"backend/**/*.{ts,js,json,md}\""
+    "format:check": "prettier --check \"frontend/**/*.{ts,tsx,js,jsx,json,css,html,md}\" \"backend/**/*.{ts,js,json,md}\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,json,md}": "prettier --write",
+    "frontend/**/*.{ts,tsx,js,jsx,json,css,html,md}": "prettier --write",
+    "backend/**/*.{ts,js,json,md}": "prettier --write"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "prettier": "^3.6.2"
   }
 }
