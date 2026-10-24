@@ -1,10 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import { agent } from './agent.mjs';
-import data from './data.mjs';
-
-const port = process.env.PORT || 8000;
+import { agent } from './agent.js';
+import data from './data.js';
 
 const app = express();
 
@@ -96,6 +94,4 @@ app.post(['/api/generate', '/generate'], async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+export default app;

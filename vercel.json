@@ -4,7 +4,7 @@
     "backend": {
       "root": "backend",
       "framework": "express",
-      "entrypoint": "index.mts"
+      "entrypoint": "index.ts"
     },
     "frontend": {
       "root": "frontend",
