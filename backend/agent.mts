@@ -1,11 +1,11 @@
 import { ChatOpenAI } from '@langchain/openai';
 import 'dotenv/config';
-import data from './data.js';
+import data from './data.mjs';
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { createAgent } from 'langchain';
 import { MemorySaver } from '@langchain/langgraph';
-import { addYTVideoToVectorStore, vectorStore } from './embeddings.js';
+import { addYTVideoToVectorStore, vectorStore } from './embeddings.mjs';
 
 const video1 = data[0];
 const video2 = data[1];

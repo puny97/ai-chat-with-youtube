@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import { agent } from './agent.js';
-import data from './data.js';
+import { agent } from './agent.mjs';
+import data from './data.mjs';
 
 const port = process.env.PORT || 8000;
 
