@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-app.post('/generate', async (req, res) => {
+app.post(['/api/generate', '/generate'], async (req, res) => {
   const { query, video_id, thread_id } = req.body ?? {};
 
   if (
@@ -97,5 +97,5 @@ app.post('/generate', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log('Server running on port 8000');
+  console.log(`Server running on port ${port}`);
 });

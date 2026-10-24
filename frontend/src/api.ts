@@ -1,13 +1,9 @@
-const apiBaseUrl = (
-  import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
-).replace(/\/$/, '');
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
 export const apiSubmission = async (query: string) => {
-  const response = await fetch(`${apiBaseUrl}/generate`, {
+  const response = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
