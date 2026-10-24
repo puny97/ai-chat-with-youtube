@@ -16,6 +16,6 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["./**/*.ts", "./**/*.mts"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
