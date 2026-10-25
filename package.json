@@ -2,6 +2,7 @@
   "name": "ai-chat-with-youtube",
   "private": true,
   "packageManager": "pnpm@10.30.1",
+  "type": "module",
   "scripts": {
     "format": "prettier --write \"frontend/**/*.{ts,tsx,js,jsx,json,css,html,md}\" \"backend/**/*.{ts,js,json,md}\"",
     "format:check": "prettier --check \"frontend/**/*.{ts,tsx,js,jsx,json,css,html,md}\" \"backend/**/*.{ts,js,json,md}\"",

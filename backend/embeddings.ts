@@ -12,7 +12,7 @@ const embeddings = new OpenAIEmbeddings({
 
 export const vectorStore = await PGVectorStore.initialize(embeddings, {
   postgresConnectionOptions: {
-    connectionString: process.env.DB_URl,
+    connectionString: process.env.DB_URL,
   },
   tableName: 'transcripts',
   columns: {
