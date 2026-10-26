@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://ai-chat-with-youtube-wl7q.vercel.app/api/:path*"
+    }
+  ]
+}
