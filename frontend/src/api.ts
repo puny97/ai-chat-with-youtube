@@ -8,7 +8,6 @@ export const apiSubmission = async (query: string) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       query,
-      video_id: 'DhJBlhw8Ye8',
       thread_id: '1',
     }),
   });

@@ -2,19 +2,34 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { agent } from './agent.js';
-import data from './data.js';
+import type data from './data.js';
+import { addYTVideoToVectorStore } from './embeddings.js';
+
+type Video = (typeof data)[number];
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
+app.listen(process.env.PORT, () => {
+  console.log('Server is running on Port:', process.env.PORT);
+});
+
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
+app.post('/webhook', async (req, res) => {
+  await Promise.all(
+    req.body.map(async (video: Video) => addYTVideoToVectorStore(video)),
+  );
+
+  res.send('OK');
+});
+
 app.post(['/api/generate', '/generate'], async (req, res) => {
-  const { query, video_id, thread_id } = req.body ?? {};
+  const { query, thread_id } = req.body ?? {};
 
   if (
     typeof query !== 'string' ||
@@ -24,16 +39,6 @@ app.post(['/api/generate', '/generate'], async (req, res) => {
     res
       .status(400)
       .json({ error: 'Enter a question between 1 and 2000 characters.' });
-    return;
-  }
-
-  if (
-    typeof video_id !== 'string' ||
-    !data.some((video) => video.video_id === video_id)
-  ) {
-    res
-      .status(400)
-      .json({ error: 'Choose a video from the available videos.' });
     return;
   }
 
@@ -56,7 +61,7 @@ app.post(['/api/generate', '/generate'], async (req, res) => {
           },
         ],
       },
-      { configurable: { thread_id, video_id } },
+      { configurable: { thread_id } },
     );
 
     const content = aiMsg.messages.at(-1)?.content;
