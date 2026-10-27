@@ -48,7 +48,7 @@ const triggerYoutubeVideoScrapeTool = tool(
 );
 
 const retrievalTool = tool(
-  async ({ query }, { configurable: { video_id } }) => {
+  async ({ query, video_id }, { configurable: {} }) => {
     const retrievedDocs = await vectorStore.similaritySearch(query, 3, {
       video_id,
     });
@@ -64,6 +64,7 @@ const retrievalTool = tool(
       "You MUST call this tool before answering every user request. Pass the user's question as the query. Do not answer until you have retrieved the relevant transcript content.",
     schema: z.object({
       query: z.string(),
+      video_id: z.string().describe('The id of the video to retrieve'),
     }),
   },
 );

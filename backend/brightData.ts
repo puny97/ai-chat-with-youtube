@@ -24,6 +24,8 @@ export const triggerYoutubeVideoScrape = async (url: string) => {
   const result = await response.json();
 
   console.log(result);
+
+  return result.snapshot_id;
 };
 
-triggerYoutubeVideoScrape('https://www.youtube.com/watch?v=1dkz-2u99U8');
+// triggerYoutubeVideoScrape('https://www.youtube.com/watch?v=1dkz-2u99U8');
