@@ -39,7 +39,7 @@ const triggerYoutubeVideoScrapeTool = tool(
     description: `Trigger the scraping of a youtube video using url.
   The tool start a scraoing job, that usually takes around 30 seconds.
   The tool will return a snapshot/job id, that can be used to check the status of the scraping job.
-  Use the tool only if the video is not in the vector store already.
+  Before calling this tool, make sure that it is not already in the vector store.
   `,
     schema: z.object({
       url: z.string(),
@@ -69,12 +69,31 @@ const retrievalTool = tool(
   },
 );
 
+const retrieveSimilarVideos = tool(
+  async ({ query }) => {
+    const retreiveVideoDocs = await vectorStore.similaritySearch(query, 20);
+
+    const ids = retreiveVideoDocs
+      .map((doc) => doc.metadata.video_id)
+      .join('\n');
+
+    return ids;
+  },
+  {
+    name: 'retrieveSimilarVideos',
+    description: 'Retrieve the ids of most similar videos to the query',
+    schema: z.object({
+      query: z.string(),
+    }),
+  },
+);
+
 const model = new ChatOpenAI({
   model: 'gpt-5.5',
 });
 
 export const agent = createAgent({
   model,
-  tools: [retrievalTool, triggerYoutubeVideoScrapeTool],
+  tools: [retrievalTool, triggerYoutubeVideoScrapeTool, retrieveSimilarVideos],
   checkpointer,
 });
