@@ -13,6 +13,12 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
+app.post('/webhook', (req, res) => {
+  console.log(req.body);
+
+  res.send('OK');
+});
+
 app.post(['/api/generate', '/generate'], async (req, res) => {
   const { query, video_id, thread_id } = req.body ?? {};
 
